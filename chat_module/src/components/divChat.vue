@@ -1,7 +1,7 @@
 <template>
     <div id="board" class="board">
         <form v-if="canLogin">
-            <input id="userName" @keydown.enter.exact.prevent @keyup.enter.exact="getUserName" type="text" v-model="sender"/>
+            <input id="userName" @keydown.enter.exact.prevent @keyup.enter.exact="getSenderEmail" type="text" v-model="senderEmail"/>
         </form>
         <p>{{sender}}</p>
         <div id="chatFrame" v-if="seenChatFrame" class="align-self-end">
@@ -83,6 +83,7 @@
         data: function () {
             return {
             	canLogin: true,
+                senderEmail: '',
             	sender: '',
                 receiver: '',
                 friends: [
@@ -155,12 +156,15 @@
 				}
 			});
 			this.$socket.on('colorHead', (friendsOnline) => {
-				console.log(friendsOnline);
-                for(var i=0;i<friendsOnline.length;i++){
-					var idx = this.friends.map(function(x) {return x.Id; }).indexOf(friendsOnline[i]);
-					this.friends[idx].online = true;
-					console.log(this.friends[idx].online)
-                }
+				// console.log(friendsOnline);
+				var friendList = this.friends;
+				if (friendsOnline.length != undefined || friendsOnline != null){
+                    for(var i=0;i<friendsOnline.length;i++){
+                        var idx = this.friends.map(function(x) {return x.Id; }).indexOf(friendsOnline[i]);
+                        friendList[idx].online = true;
+                        console.log(this.friends[idx].online)
+                    }
+				}
 			});
 			this.$socket.on('grayHead', (friend) => {
 				console.log(this.friends);
@@ -172,34 +176,38 @@
         },
 
         methods: {
-        	getUserName:  function () {
-				var friendList = this.friends;
-				this.$socket.emit('friendOn', {sender: this.sender})
+        	getSenderEmail:  function () {
+				const that = this;
+        		var friendList = this.friends;
+				var senderID = '123';
                 this.canLogin = false;
                 this.$axios.get('/chat', {
                 	params:{
-                		email: this.sender
+                		email: this.senderEmail
                     }
                 })
                     .then(function (response) {
                         if (response.data){
-							console.log(typeof(response.data));
-							console.log(response.data);
+                        	// get friend list
+							// console.log(typeof(response.data));
+							// console.log(response.data[0].user_id);
 							for (var i=0;i<response.data.length;i++){
 								var friend = response.data[i].friend_id;
 								friendList.push({
                                     src: friend.avatar,
                                     name: friend.username,
-                                    online: true,
+                                    online: false,
                                     Id: friend._id
 								});
 							}
-                        }
+                            that.sender = response.data[0].user_id;
+							that.$socket.emit('friendOn', {sender: that.sender})
+						}
                     })
                     .catch(function (error) {
                     	console.log(error);
-                    })
-            },
+                    });
+			},
             minChat: function () {
                 this.maximize = !(this.maximize);
                 console.log(this.maximize);
@@ -250,7 +258,7 @@
                 this.msgs.push({id: this.nextMsgId++, type: 'send', info: 'dog gulugulu'});
 
 
-                console.log(this.receiver);
+                console.log('receiver: '+this.receiver);
 
                 //change chatDisplay!!
 

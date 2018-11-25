@@ -54,20 +54,16 @@ io.on('connection', function (socket) {
 	socket.on('friendOn', function (data) {
 		// if username exists, legal
 		if (friendsOnline.indexOf(data.sender) === -1){
-			if (Object.keys(friendList).indexOf(data.sender) !== -1) {
-				// save his id and socket for disconnection
-				friendsId[socket] = data.sender;
-				friendsSocket[data.sender] = socket;
+			// save his id and socket for disconnection
+			friendsId[socket] = data.sender;
+			friendsSocket[data.sender] = socket;
 
-				// 应该保存他在线上的状态 这样后面登录的人也知道他是上线的
-				friendsOnline.push(data.sender);
-				console.log(data.sender+' is online');
+			// 应该保存他在线上的状态 这样后面登录的人也知道他是上线的
+			friendsOnline.push(data.sender);
+			console.log(data.sender+' is online');
 
-				// tell the clients that he is online
-				io.emit('colorHead', friendsOnline)
-			} else {
-				console.log('no this user in server')
-			}
+			// tell the clients that he is online
+			io.emit('colorHead', friendsOnline)
 		} else {
 			console.log('already logged in')
 		}
