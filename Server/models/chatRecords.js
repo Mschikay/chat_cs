@@ -10,7 +10,15 @@ const chatRecordsSchema = new Schema({
 		type: Schema.Types.ObjectId,
 		ref: 'users'
 	},
-	message:  String
+	message:  String,
+	sendOrRecv: {
+		type: String,
+		required: true
+	},
+	timeStp: {
+		type: Date,
+		default: Date.now()
+	}
 });
 
 module.exports = mongoose.model('chatRecords', chatRecordsSchema);

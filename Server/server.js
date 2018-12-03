@@ -4,6 +4,7 @@ const friends = require('./models/friends');
 const chatRecords = require('./models/chatRecords');
 const isRead = require('./models/isRead');
 const users = require('./models/users');
+const sockets = require('./models/sockets');
 const chat = require('./routes/chat');
 const cors = require('cors');
 const express = require('express');
@@ -42,55 +43,119 @@ app.get('/', function (req, res) {
 
 
 /*	process chat logic	*/
-const friendList = {'01': ['02', '03', '04'],
-	'02': ['01', '04'],
-	'03': ['01'],
-	'04': ['01', '02']};
 const friendsSocket = {};
 const friendsId = {};
 const friendsOnline = [];
 io.on('connection', function (socket) {
+
 	// when friend are logging in
 	socket.on('friendOn', function (data) {
-		// if username exists, legal
 		if (friendsOnline.indexOf(data.sender) === -1){
+			console.log(data.sender+' is online');
+
 			// save his id and socket for disconnection
 			friendsId[socket] = data.sender;
 			friendsSocket[data.sender] = socket;
-
-			// 应该保存他在线上的状态 这样后面登录的人也知道他是上线的
 			friendsOnline.push(data.sender);
-			console.log(data.sender+' is online');
 
-			// tell the clients that he is online
-			io.emit('colorHead', friendsOnline)
+			let socketRecord = new sockets({
+				user_id: data.sender,
+				socketInfo: socket
+			});
+			socketRecord.save(function(err){
+				console.log(err)
+			})
+
 		} else {
 			console.log('already logged in')
 		}
 	});
 
+	//load history
+	socket.on('load history', function (data) {
+		chatRecords.find(
+			{
+				user_id: data.sender,
+				friend_id: data.receiver,
+			},
+			['sendOrRecv', 'message'],
+			{
+				sort: {'_id': 1}
+			},
+			function (err, c){
+				if (err){
+					console.log(err)
+				}else{
+					socket.emit('get history', c)
+				}
+			})
+	});
 	// get message
 	socket.on('send a message', function (data) {
 		var sender = data.sender;
 		var receiver = data.receiver;
 		console.log(data.sender+' '+data.msg+' '+data.receiver);
-		friendsSocket[receiver].emit('receive a message',
-			{sender: sender, receiver: receiver, msg: data.msg})
+
+		let sendRecord = new chatRecords({
+			user_id: data.sender,
+			friend_id: data.receiver,
+			message:  data.msg,
+			sendOrRecv: 'send'
+		});
+		let recvRecord = new chatRecords({
+			user_id: data.receiver,
+			friend_id: data.sender,
+			message:  data.msg,
+			sendOrRecv: 'receive'
+		});
+		sendRecord.save(function(err){
+			if(err){
+				console.log(err)
+			}else{
+				console.log('saved!')
+			}
+		});
+		recvRecord.save(function(err){
+			if(err){
+				console.log(err)
+			}else{
+				console.log('saved!')
+			}
+		});
+
+		sockets.findOne({user_id: data.receiver}, function (err, s){
+			if (err){
+				console.log('your friend is offline')
+			}else if(s.socketInfo === {} || s.socketInfo === undefined || s.socketInfo===null) {
+				console.log('your friend is offline')
+			}else{
+				s.socketInfo.emit('receive a message',
+					{sender: sender, receiver: receiver, msg: data.msg})
+			}
+		});
 	});
 
 	// disconnect
 	socket.on('disconnect', function(){
-		//display that he is offline
 		var friend = friendsId[socket];
-
-		// remove from friendsOnline friendsId friendsSocket
 		var idx = friendsOnline.indexOf(friend);
 		friendsOnline.splice(idx, 1);
 		delete friendsId[socket];
 		delete friendsSocket[friend];
 
-		console.log("dis  "+friend);
-		io.emit('grayHead', friend)
+		sockets.findOneAndUpdate(
+			{socketInfo: socket},
+			{$set: {socket: {}}},
+			{new: true},
+			function (err, s){
+			if (err){
+				console.log('Something abnormal')
+			}else{
+				console.log(s)
+			}
+		});
+
+		console.log(friend+" is offline");
 
 	})
 });

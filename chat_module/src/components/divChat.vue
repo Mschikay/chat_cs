@@ -1,9 +1,16 @@
 <template>
     <div id="board" class="board">
-        <form v-if="canLogin">
-            <input id="userName" @keydown.enter.exact.prevent @keyup.enter.exact="getSenderEmail" type="text" v-model="senderEmail"/>
-        </form>
-        <p>{{sender}}</p>
+        <!--friend list frame-->
+        <ul id="friendList" class="friendList">
+            <li class="friend" v-on:click="display" v-for="friend in friends" :key="friend.index">
+                <!--head image-->
+                <img v-if="friend.online" class="head img-thumbnail" :src="friend.src" :alt="friend.Id">
+                <img v-else class="head img-thumbnail grayHead" :src="friend.src" :alt="friend.Id">
+                <div>{{friend.name}}</div>
+            </li>
+        </ul>
+
+
         <div id="chatFrame" v-if="seenChatFrame" class="align-self-end">
 
             <!--head of chat, including friend name and buttons-->
@@ -55,15 +62,6 @@
             </div>
         </div>
 
-        <!--friend list frame-->
-        <ul id="friendList" class="friendList">
-            <li class="friend" v-on:click="display" v-for="friend in friends" :key="friend.index">
-                <!--head image-->
-                <img v-if="friend.online" class="head img-thumbnail" :src="friend.src" :alt="friend.Id">
-                <img v-else class="head img-thumbnail grayHead" :src="friend.src" :alt="friend.Id">
-                <div>{{friend.name}}</div>
-            </li>
-        </ul>
     </div>
 </template>
 
@@ -144,11 +142,53 @@
                 })
             },
         },
-
+        created: function () {
+			const that = this;
+			var friendList = this.friends;
+			this.canLogin = false;
+			console.log('send msg to server');
+			console.log(this.$route.query.email);
+			this.$axios.get('/chat', {
+				params:{
+					email: that.$route.query.email
+				}
+			})
+				.then(function (response) {
+					if (response.data){
+						// get friend list
+						console.log(typeof(response.data));
+						console.log(response.data[0].user_id);
+						for (var i=0;i<response.data.length;i++){
+							var friend = response.data[i].friend_id;
+							friendList.push({
+								src: friend.avatar,
+								name: friend.username,
+								online: false,
+								Id: friend._id
+							});
+						}
+						that.sender = response.data[0].user_id;
+						that.$socket.emit('friendOn', {sender: that.sender})
+					}
+				})
+				.catch(function (error) {
+					console.log(error);
+				});
+		},
         mounted: function () {
+			this.$socket.on('reconnect', (attemptNumber) => {
+				console.log('rereredodododo');
+				this.$socket.emit('friendOn', {sender: this.sender})
+			});
+			this.$socket.on('get history', (data) => {
+				console.log(data);
+                for(let i=0;i<data.length;i++){
+					this.msgs.push({id: this.nextMsgId++, type: data[i].sendOrRecv, info: data[i].message});
+				}
+            });
 			this.$socket.on('receive a message', (data) => {
 				//data saved in the MongoDb, should be retrieved to display
-				if (data.sender === this.receiver){    // NO need to use red dot to remind me, we can see chat screen displayed
+				if (data.sender === this.receiver){
 					this.msgs.push({id: this.nextMsgId++, type: 'receive', info: data.msg});
 				}
 				else{
@@ -161,7 +201,7 @@
 				if (friendsOnline.length != undefined || friendsOnline != null){
                     for(var i=0;i<friendsOnline.length;i++){
                         var idx = this.friends.map(function(x) {return x.Id; }).indexOf(friendsOnline[i]);
-                        friendList[idx].online = true;
+                        // friendList[idx].online = true;
                         console.log(this.friends[idx].online)
                     }
 				}
@@ -176,38 +216,6 @@
         },
 
         methods: {
-        	getSenderEmail:  function () {
-				const that = this;
-        		var friendList = this.friends;
-				var senderID = '123';
-                this.canLogin = false;
-                this.$axios.get('/chat', {
-                	params:{
-                		email: this.senderEmail
-                    }
-                })
-                    .then(function (response) {
-                        if (response.data){
-                        	// get friend list
-							// console.log(typeof(response.data));
-							// console.log(response.data[0].user_id);
-							for (var i=0;i<response.data.length;i++){
-								var friend = response.data[i].friend_id;
-								friendList.push({
-                                    src: friend.avatar,
-                                    name: friend.username,
-                                    online: false,
-                                    Id: friend._id
-								});
-							}
-                            that.sender = response.data[0].user_id;
-							that.$socket.emit('friendOn', {sender: that.sender})
-						}
-                    })
-                    .catch(function (error) {
-                    	console.log(error);
-                    });
-			},
             minChat: function () {
                 this.maximize = !(this.maximize);
                 console.log(this.maximize);
@@ -250,18 +258,12 @@
                 this.userHead = this.currentFriend.src;
 
                 // add message from database
-                // this.msgs.push({id: this.nextMsgId++, type: 'send', info: 'hello hello hellohellohellohellohellohellohellohellohello hello hello'});
-                this.msgs.push({id: this.nextMsgId++, type: 'receive', info: 'I am your father'});
-                this.msgs.push({id: this.nextMsgId++, type: 'send', info: 'what\' s your last name?'});
-                this.msgs.push({id: this.nextMsgId++, type: 'receive', info: 'Of course the same as yours'});
-                this.msgs.push({id: this.nextMsgId++, type: 'send', info: 'So you are my son'});
-                this.msgs.push({id: this.nextMsgId++, type: 'send', info: 'dog gulugulu'});
-
-
-                console.log('receiver: '+this.receiver);
-
-                //change chatDisplay!!
-
+                // load chat history
+                this.$socket.emit('load history',
+                    {
+                    	sender: this.sender,
+                        receiver: this.receiver
+                    })
             },
 			newLine: function () {
 				this.msg = this.msg + '\n';
@@ -289,15 +291,10 @@
 
 <style scoped>
 
-    body {
-        background-color: #eeeeee;
-        font-family: 'Chakra Petch', sans-serif;
-    }
-
     div.board {
         display: flex;
         flex-direction: row;
-        justify-content: flex-end;
+        justify-content: flex-start;
         flex-wrap: nowrap;
         height: 100vh;
     }
@@ -308,18 +305,15 @@
         border-left-color: lightgray;
         border-left-width: 1px;
         border-left-style: solid;
-        border-top-left-radius: 8px;
+        border-right-color: lightgray;
+        border-right-width: 1px;
+        border-right-style: solid;
+        border-bottom-width: 1px;
+        border-bottom-style: solid;
+        border-bottom-radius: 1px;
         overflow-y: auto;
         padding: 0;
-        margin: 0 8px 0;
-    }
-    ul.list-group{
-        border-left-color: lightgray;
-        border-left-style: solid;
-        border-left-width: 1px;
-        overflow-y: auto;
-        padding: 0;
-        margin: 0 8px 0;
+        margin: 0 80px 0 0;
     }
     .friend{
         display: flex;
@@ -359,7 +353,7 @@
     }
     .friend > div{
         width: 180px;
-        flex-grow: 0;
+        flex-grow: 1;
         text-align: start;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -368,13 +362,14 @@
     }
 
     #chatFrame{
-        width: 360px;
+        width: 550px;
         height: auto;
+        border: none;
         border-radius: 8px;
         box-shadow: 0px 0px 4px #888888;
         border-style: none;
         background-color: white;
-        margin:auto 8px 8px auto;
+        margin-bottom: 3px;
     }
     #chatHead{
         display: flex;
@@ -423,7 +418,7 @@
     }
     #chatDisplay{
         width: 100%;
-        height: 340px;
+        height: 88vh;
         border-style: none;
         list-style: none;
         overflow: scroll;
@@ -444,14 +439,14 @@
     }
     li > pre{
         font-family: "Apple Braille";
-        max-width: 55%;
+        max-width: 65%;
         border-radius: 15px;
         white-space: pre-wrap;
         word-break: break-word;
         padding: 6px;
         height: auto;
         margin:0;
-        font-size: 14px;
+        font-size: 18px;
     }
     li.send{
         justify-content: flex-end;
