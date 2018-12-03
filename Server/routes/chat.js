@@ -6,8 +6,6 @@ const router = express.Router();
 /* GET home page of chat module. */
 router.get('/', function (req, res) {
 	var myEmail = req.param('email');
-	console.log(myEmail);
-
 	users.findOne({email: myEmail}, function(err, u){
 		if (err || u === null || u === undefined){
 			res.send(err);

@@ -2,11 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="16b9ff65-02d4-42df-a9f9-3ece4579d468" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Server/models/sockets.js" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/chat_module/src/router/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/models/chatRecords.js" beforeDir="false" afterPath="$PROJECT_DIR$/Server/models/chatRecords.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/models/friends.js" beforeDir="false" afterPath="$PROJECT_DIR$/Server/models/friends.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/models/sockets.js" beforeDir="false" afterPath="$PROJECT_DIR$/Server/models/socketRecords.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Server/models/test.js" beforeDir="false" afterPath="$PROJECT_DIR$/Server/models/test.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Server/routes/chat.js" beforeDir="false" afterPath="$PROJECT_DIR$/Server/routes/chat.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Server/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/Server/server.js" afterDir="false" />
@@ -24,6 +22,28 @@
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DockManager">
+    <window id="1">
+      <content type="file-editors">
+        <state>
+          <leaf>
+            <file pinned="false" current-in-tab="true">
+              <entry file="file://$PROJECT_DIR$/Server/server.js">
+                <provider selected="true" editor-type-id="text-editor">
+                  <state relative-caret-position="396">
+                    <caret line="146" column="11" lean-forward="true" selection-start-line="146" selection-start-column="11" selection-end-line="146" selection-end-column="11" />
+                    <folding>
+                      <element signature="n#!!doc" expanded="true" />
+                    </folding>
+                  </state>
+                </provider>
+              </entry>
+            </file>
+          </leaf>
+        </state>
+      </content>
+    </window>
   </component>
   <component name="FUSProjectUsageTrigger">
     <session id="2142989768">
@@ -73,25 +93,25 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="js" value="2259" />
-          <entry key="vue" value="755" />
+          <entry key="js" value="3131" />
+          <entry key="vue" value="767" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JavaScript" value="2259" />
-          <entry key="Vue.js" value="755" />
+          <entry key="JavaScript" value="3131" />
+          <entry key="Vue.js" value="767" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="js" value="5" />
+          <entry key="js" value="13" />
           <entry key="vue" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="JavaScript" value="5" />
+          <entry key="JavaScript" value="13" />
           <entry key="Vue.js" value="1" />
         </counts>
       </usages-collector>
@@ -99,32 +119,20 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Server/models/socketRecords.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="165">
+              <caret line="11" column="20" selection-start-line="11" selection-start-column="20" selection-end-line="11" selection-end-column="20" />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Server/server.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="162">
-              <caret line="128" column="93" selection-start-line="128" selection-start-column="93" selection-end-line="128" selection-end-column="93" />
-              <folding>
-                <element signature="n#!!doc" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Server/models/sockets.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="8" column="11" lean-forward="true" selection-start-line="8" selection-start-column="11" selection-end-line="8" selection-end-column="11" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/chat_module/src/components/divChat.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="273">
-              <caret line="183" column="34" lean-forward="true" selection-start-line="183" selection-start-column="34" selection-end-line="183" selection-end-column="34" />
+            <state relative-caret-position="226">
+              <caret line="464" column="17" selection-start-line="464" selection-start-column="17" selection-end-line="464" selection-end-column="17" />
               <folding>
                 <element signature="n#style#0;n#svg#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#svg#0;n#!!top" expanded="true" />
@@ -136,8 +144,35 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Server/models/test.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="229">
-              <caret line="43" column="26" lean-forward="true" selection-start-line="43" selection-start-column="26" selection-end-line="43" selection-end-column="26" />
+            <state relative-caret-position="210">
+              <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/node_modules/mongoose/lib/helpers/common.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="38">
+              <caret line="67" column="6" selection-start-line="67" selection-start-column="6" selection-end-line="67" selection-end-column="6" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Server/routes/chat.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="223">
+              <caret line="20" column="17" lean-forward="true" selection-start-line="20" selection-start-column="17" selection-end-line="20" selection-end-column="17" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/node_modules/bson/lib/bson/parser/serializer.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="590">
+              <caret line="347" column="17" selection-start-line="347" selection-start-column="17" selection-end-line="347" selection-end-column="17" />
             </state>
           </provider>
         </entry>
@@ -202,10 +237,15 @@
       <find>user_id</find>
       <find>sort</find>
       <find>chatR</find>
+      <find>socketIn</find>
+      <find>socketInfo</find>
+      <find>sockets</find>
+      <find>Something</find>
+      <find>head</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/chat_module" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -214,15 +254,16 @@
         <option value="$PROJECT_DIR$/chat_module/src/router/index.js" />
         <option value="$PROJECT_DIR$/Server/models/user.js" />
         <option value="$PROJECT_DIR$/Server/models/isRead.js" />
-        <option value="$PROJECT_DIR$/Server/routes/chat.js" />
         <option value="$PROJECT_DIR$/chat_module/src/main.js" />
         <option value="$PROJECT_DIR$/Server/models/friends.js" />
         <option value="$PROJECT_DIR$/Server/models/socket.js" />
         <option value="$PROJECT_DIR$/Server/models/chatRecords.js" />
+        <option value="$PROJECT_DIR$/Server/routes/chat.js" />
         <option value="$PROJECT_DIR$/Server/models/sockets.js" />
-        <option value="$PROJECT_DIR$/chat_module/src/components/divChat.vue" />
-        <option value="$PROJECT_DIR$/Server/models/test.js" />
+        <option value="$PROJECT_DIR$/node_modules/mongoose/lib/model.js" />
         <option value="$PROJECT_DIR$/Server/server.js" />
+        <option value="$PROJECT_DIR$/Server/models/test.js" />
+        <option value="$PROJECT_DIR$/chat_module/src/components/divChat.vue" />
       </list>
     </option>
   </component>
@@ -274,8 +315,8 @@
     </packageJsonPaths>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="600" />
-    <option name="y" value="23" />
+    <option name="x" value="172" />
+    <option name="y" value="28" />
     <option name="width" value="1234" />
     <option name="height" value="877" />
   </component>
@@ -370,12 +411,12 @@
       <workItem from="1543430732520" duration="454000" />
       <workItem from="1543456838245" duration="368000" />
       <workItem from="1543766147244" duration="922000" />
-      <workItem from="1543769101894" duration="19324000" />
+      <workItem from="1543769101894" duration="27593000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="50159000" />
+    <option name="totallyTimeSpent" value="58428000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -387,7 +428,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="600" y="23" width="1234" height="877" extended-state="0" />
+    <frame x="172" y="28" width="1234" height="877" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" weight="0.2129964" />
@@ -402,7 +443,7 @@
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32866243" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="9" visible="true" weight="0.28535032" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="9" visible="true" weight="0.49808916" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -432,24 +473,10 @@
     <entry file="file://$PROJECT_DIR$/../../hw4-web/server.js" />
     <entry file="file://$PROJECT_DIR$/../../hw4-web/routes/api.js" />
     <entry file="file://$PROJECT_DIR$/../../assignmnet4/MEAN/routes/product.js" />
-    <entry file="file://$PROJECT_DIR$/node_modules/mongoose/lib/model.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4211">
-          <caret line="3582" column="6" selection-start-line="3582" selection-start-column="6" selection-end-line="3582" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Server/models/isRead.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="150">
           <caret line="10" column="36" selection-start-line="10" selection-start-column="36" selection-end-line="10" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Server/routes/chat.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="22" column="17" lean-forward="true" selection-start-line="22" selection-start-column="17" selection-end-line="22" selection-end-column="17" />
         </state>
       </provider>
     </entry>
@@ -461,6 +488,13 @@
             <element signature="n#!!doc" expanded="true" />
             <element signature="e#32#53#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/bson/lib/bson/parser/serializer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="590">
+          <caret line="347" column="17" selection-start-line="347" selection-start-column="17" selection-end-line="347" selection-end-column="17" />
         </state>
       </provider>
     </entry>
@@ -478,6 +512,44 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Server/routes/chat.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="223">
+          <caret line="20" column="17" lean-forward="true" selection-start-line="20" selection-start-column="17" selection-end-line="20" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/mongoose/lib/helpers/common.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="38">
+          <caret line="67" column="6" selection-start-line="67" selection-start-column="6" selection-end-line="67" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/mongoose/lib/model.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="290">
+          <caret line="4531" column="9" lean-forward="true" selection-start-line="4531" selection-start-column="9" selection-end-line="4531" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Server/models/socketRecords.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="20" selection-start-line="11" selection-start-column="20" selection-end-line="11" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Server/server.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="396">
+          <caret line="146" column="11" lean-forward="true" selection-start-line="146" selection-start-column="11" selection-end-line="146" selection-end-column="11" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Server/models/chatRecords.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
@@ -487,35 +559,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Server/models/test.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="229">
-          <caret line="43" column="26" lean-forward="true" selection-start-line="43" selection-start-column="26" selection-end-line="43" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Server/models/sockets.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="11" lean-forward="true" selection-start-line="8" selection-start-column="11" selection-end-line="8" selection-end-column="11" />
+        <state relative-caret-position="210">
+          <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/chat_module/src/components/divChat.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="273">
-          <caret line="183" column="34" lean-forward="true" selection-start-line="183" selection-start-column="34" selection-end-line="183" selection-end-column="34" />
+        <state relative-caret-position="226">
+          <caret line="464" column="17" selection-start-line="464" selection-start-column="17" selection-end-line="464" selection-end-column="17" />
           <folding>
             <element signature="n#style#0;n#svg#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#svg#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Server/server.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="128" column="93" selection-start-line="128" selection-start-column="93" selection-end-line="128" selection-end-column="93" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
           </folding>
         </state>
       </provider>

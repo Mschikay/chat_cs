@@ -4,7 +4,7 @@ const friends = require('./models/friends');
 const chatRecords = require('./models/chatRecords');
 const isRead = require('./models/isRead');
 const users = require('./models/users');
-const sockets = require('./models/sockets');
+const socketRecords = require('./models/socketRecords');
 const chat = require('./routes/chat');
 const cors = require('cors');
 const express = require('express');
@@ -50,26 +50,24 @@ io.on('connection', function (socket) {
 
 	// when friend are logging in
 	socket.on('friendOn', function (data) {
-		if (friendsOnline.indexOf(data.sender) === -1){
-			console.log(data.sender+' is online');
-
-			// save his id and socket for disconnection
-			friendsId[socket] = data.sender;
-			friendsSocket[data.sender] = socket;
-			friendsOnline.push(data.sender);
-
-			let socketRecord = new sockets({
-				user_id: data.sender,
-				socketInfo: socket
-			});
-			socketRecord.save(function(err){
-				console.log(err)
-			})
-
-		} else {
-			console.log('already logged in')
-		}
+		// save his id and socket for disconnection
+		friendsId[socket] = data.sender;
+		friendsSocket[data.sender] = socket;
+		friendsOnline.push(data.sender);
+		socketRecords.findOneAndUpdate(
+			{ user_id : data.sender },
+			{ $set: { user_id: data.sender, socketInfo: socket.id}},
+			{ upsert:true, returnNewDocument : true },
+			function(err, s){
+				if (err){
+					console.log(err)
+				}else{
+					console.log(s)
+				}
+			}
+		);
 	});
+
 
 	//load history
 	socket.on('load history', function (data) {
@@ -90,6 +88,8 @@ io.on('connection', function (socket) {
 				}
 			})
 	});
+
+
 	// get message
 	socket.on('send a message', function (data) {
 		var sender = data.sender;
@@ -102,18 +102,18 @@ io.on('connection', function (socket) {
 			message:  data.msg,
 			sendOrRecv: 'send'
 		});
-		let recvRecord = new chatRecords({
-			user_id: data.receiver,
-			friend_id: data.sender,
-			message:  data.msg,
-			sendOrRecv: 'receive'
-		});
 		sendRecord.save(function(err){
 			if(err){
 				console.log(err)
 			}else{
 				console.log('saved!')
 			}
+		});
+		let recvRecord = new chatRecords({
+			user_id: data.receiver,
+			friend_id: data.sender,
+			message:  data.msg,
+			sendOrRecv: 'receive'
 		});
 		recvRecord.save(function(err){
 			if(err){
@@ -123,13 +123,16 @@ io.on('connection', function (socket) {
 			}
 		});
 
-		sockets.findOne({user_id: data.receiver}, function (err, s){
+		socketRecords.findOne({user_id: data.receiver}, function (err, s){
 			if (err){
+				console.log('Something abnormal')
+			}else if (s === null || s === undefined){
 				console.log('your friend is offline')
-			}else if(s.socketInfo === {} || s.socketInfo === undefined || s.socketInfo===null) {
+			}
+			else if (s.socketInfo === undefined || s.socketInfo===null) {
 				console.log('your friend is offline')
 			}else{
-				s.socketInfo.emit('receive a message',
+				io.to(s.socketInfo).emit('receive a message',
 					{sender: sender, receiver: receiver, msg: data.msg})
 			}
 		});
@@ -143,9 +146,9 @@ io.on('connection', function (socket) {
 		delete friendsId[socket];
 		delete friendsSocket[friend];
 
-		sockets.findOneAndUpdate(
-			{socketInfo: socket},
-			{$set: {socket: {}}},
+		socketRecords.findOneAndUpdate(
+			{socketInfo: socket.id},
+			{$set: {socket: null}},
 			{new: true},
 			function (err, s){
 			if (err){

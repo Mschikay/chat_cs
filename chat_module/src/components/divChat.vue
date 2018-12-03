@@ -337,8 +337,8 @@
 
     }
     .friend > .head{
-        width: 35px;
-        height: 35px;
+        width: 50px;
+        height: 50px;
         padding: 2px;
         flex-grow: 0;
         border-style: none;
@@ -462,8 +462,8 @@
     }
     li.receive > img{
         margin-right: 2px;
-        width: 20px;
-        height: 20px;
+        width: 35px;
+        height: 35px;
         padding: 0;
     }
     li.receive > img:hover{

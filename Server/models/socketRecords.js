@@ -12,8 +12,7 @@ const socketSchema = new Schema({
 		ref: 'users'
 	},
 	socketInfo: {
-		type: Object,
-		default: {}
+		type: String,
 	}
 });
 
