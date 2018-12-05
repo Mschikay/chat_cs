@@ -170,7 +170,7 @@
 							});
 						}
 						that.senderUserName = response.data['me'].username;
-						that.sender = response.data[0].user_id;
+						that.sender = response.data['friend'][0].user_id;
 						that.$socket.emit('friendOn', {sender: that.sender})
 					}
 				})
@@ -198,23 +198,6 @@
 					console.log('click the user iamge to display'); // Use red dot to remind me
 				}
 			});
-			this.$socket.on('colorHead', (friendsOnline) => {
-				// console.log(friendsOnline);
-				var friendList = this.friends;
-				if (friendsOnline.length != undefined || friendsOnline != null){
-                    for(var i=0;i<friendsOnline.length;i++){
-                        var idx = this.friends.map(function(x) {return x.Id; }).indexOf(friendsOnline[i]);
-                        // friendList[idx].online = true;
-                        console.log(this.friends[idx].online)
-                    }
-				}
-			});
-			this.$socket.on('grayHead', (friend) => {
-				console.log(this.friends);
-				var idx = this.friends.map(function(x) {return x.Id; }).indexOf(friend);
-				this.friends[idx].online = false;
-				console.log(this.friends[idx].online)
-			})
 
         },
 
