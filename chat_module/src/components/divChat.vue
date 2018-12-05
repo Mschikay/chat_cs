@@ -2,6 +2,9 @@
     <div id="board" class="board">
         <!--friend list frame-->
         <ul id="friendList" class="friendList">
+            <li>
+                <p id="myUserName">{{senderUserName}}</p>
+            </li>
             <li class="friend" v-on:click="display" v-for="friend in friends" :key="friend.index">
                 <!--head image-->
                 <img v-if="friend.online" class="head img-thumbnail" :src="friend.src" :alt="friend.Id">
@@ -9,7 +12,6 @@
                 <div>{{friend.name}}</div>
             </li>
         </ul>
-
 
         <div id="chatFrame" v-if="seenChatFrame" class="align-self-end">
 
@@ -80,6 +82,7 @@
         name: "divChat",
         data: function () {
             return {
+            	senderUserName: '',
             	canLogin: true,
                 senderEmail: '',
             	sender: '',
@@ -156,10 +159,9 @@
 				.then(function (response) {
 					if (response.data){
 						// get friend list
-						console.log(typeof(response.data));
-						console.log(response.data[0].user_id);
-						for (var i=0;i<response.data.length;i++){
-							var friend = response.data[i].friend_id;
+						console.log(response.data);
+						for (var i=0;i<response.data['friend'].length;i++){
+							var friend = response.data['friend'][i].friend_id;
 							friendList.push({
 								src: friend.avatar,
 								name: friend.username,
@@ -167,6 +169,7 @@
 								Id: friend._id
 							});
 						}
+						that.senderUserName = response.data['me'].username;
 						that.sender = response.data[0].user_id;
 						that.$socket.emit('friendOn', {sender: that.sender})
 					}
@@ -314,6 +317,13 @@
         overflow-y: auto;
         padding: 0;
         margin: 0 80px 0 0;
+    }
+    #myUserName{
+        text-align: center;
+        background-color: #548cc9;
+        padding: 0;
+        margin: 1px 0;
+        font-size: 20px;
     }
     .friend{
         display: flex;

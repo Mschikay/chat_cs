@@ -17,7 +17,11 @@ router.get('/', function (req, res) {
 					res.send(err);
 				}else{
 					// console.log(friend);
-					res.send(friend);
+					res.send(
+						{
+							'friend': friend,
+							'me': u
+						});
 				}
 			});
 		}
